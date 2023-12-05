@@ -1,5 +1,6 @@
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const signupController = async (req, res) => {
     try {
@@ -41,7 +42,7 @@ const loginController = async (req, res) => {
 
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).send("user is not registered"); 
+            return res.status(404).send("user is not registered");
         }
 
         const matched = await bcrypt.compare(password, user.password);
@@ -49,8 +50,62 @@ const loginController = async (req, res) => {
             return res.status(403).send('Incorrect Password')
         }
 
-        return res.json({ user }); 
+        const accessToken = generateAccessToken({
+            id: user._id,
+        });
 
+        const refreshToken = generateRefreshToken({
+            id: user._id,
+        })
+
+        return res.json({ accessToken, refreshToken });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// this api will chech the refreshToken validity and generate a new access token
+const refreshAccessTokenController = async (req, res) => {
+    const { refreshToken } = req.body;
+
+    try {
+        const decoded = jwt.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_PRIVATE_KEY
+        );
+
+        const id = decoded._id;
+        const accessToken = generateAccessToken({ _id });
+
+        return res.status(201).json({ accessToken }); 
+
+    } catch (error) {
+        console.log(error);
+        return res.status(401).send("Invalid refresh token");
+    }
+}
+
+//internal funcions
+const generateAccessToken = (data) => {
+    try {
+        const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
+            expiresIn: '15m',
+        });
+        console.log(token);
+        return token;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const generateRefreshToken = (data) => {
+    try {
+        const token = jwt.sign(data, process.env.REFRESH_TOKEN_PRIVATE_KEY, {
+            expiresIn: "1y",
+        })
+        console.log(token);
+        return token;
     } catch (error) {
         console.log(error);
     }
