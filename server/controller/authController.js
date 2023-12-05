@@ -69,16 +69,20 @@ const loginController = async (req, res) => {
 const refreshAccessTokenController = async (req, res) => {
     const { refreshToken } = req.body;
 
+    if (!refreshToken) {
+        return res.status(401).send("Refresh token is required");
+    }
+
     try {
         const decoded = jwt.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_PRIVATE_KEY
         );
 
-        const id = decoded._id;
+        const _id = decoded._id;
         const accessToken = generateAccessToken({ _id });
 
-        return res.status(201).json({ accessToken }); 
+        return res.status(201).json({ accessToken });
 
     } catch (error) {
         console.log(error);
@@ -113,5 +117,6 @@ const generateRefreshToken = (data) => {
 
 module.exports = {
     signupController,
-    loginController
+    loginController,
+    refreshAccessTokenController,
 }
