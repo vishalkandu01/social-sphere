@@ -4,6 +4,8 @@ const dbConnect = require('./dbConnect');
 const authRouter = require('./router/authRouter');
 const postsRouter = require('./router/postsRouter');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 
 dotenv.config('./env');
@@ -13,6 +15,11 @@ const app = express();
 //middlewares
 app.use(express.json());
 app.use(morgan());
+app.use(cookieParser()); 
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}))
 
 
 app.use('/auth', authRouter);
