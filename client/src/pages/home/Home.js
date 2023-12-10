@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-// import { axiosClient } from '../../utils/axiosClient';
-import axiosClient from '../../utils/axiosClient';
+import { axiosClient } from '../../utils/axiosClient';
+// import axiosClient from '../../utils/axiosClient';
 
 function Home() {
 
