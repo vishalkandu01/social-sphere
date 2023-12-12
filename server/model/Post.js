@@ -10,7 +10,7 @@ const postSchema = mongoose.Schema({
         publicId: String,
         url: String
     },
-    captions: {
+    caption: {
         type: String,
         required: true,
     },
@@ -20,12 +20,6 @@ const postSchema = mongoose.Schema({
             ref: 'user'
         }
     ],
-    posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'post'
-        }
-    ]
 })
 
 module.exports = mongoose.model('post', postSchema);

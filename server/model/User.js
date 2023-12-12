@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
     password: {
         type: String, 
         required: true,
+        select: false,
     },
     name: {
         type: String,
@@ -29,6 +30,12 @@ const userSchema = mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'user'
+        }
+    ],
+    posts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'post'
         }
     ]
 })
