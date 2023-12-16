@@ -20,8 +20,13 @@ module.exports = async (req, res, next) => {
             accessToken, 
             process.env.ACCESS_TOKEN_PRIVATE_KEY,
         );
-        req._id = decoded._id;
-        console.log("inside require user");
+        req._id = decoded._id; 
+        
+        const user = await User.findById(req._id);
+        if(!user) {
+            return res.send(404, "User not found");
+        }
+        
         next();
     } catch (e) {
         console.log(e);
