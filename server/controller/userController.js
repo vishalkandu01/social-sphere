@@ -77,9 +77,27 @@ const getMyPosts = async (req, res) => {
     }
 }
 
+const getUserPosts = async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        if(!userId) {
+            return res.send(400, error(400, "user not exist"));
+        }
+
+        const allUserPosts = await Post.find({
+            owner: userId
+        }).populate('likes');
+
+        return res.send(success(200, {allUserPosts}));
+    } catch (e) {
+        console.log(e);
+        return res.send(error(500, e.message));
+    }
+}
 
 module.exports = {
     followOrUnfollowUserController,
     getPostOfFollowing,
     getMyPosts,
+    getUserPosts,
 }
