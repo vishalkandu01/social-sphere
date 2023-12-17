@@ -86,9 +86,36 @@ const updatePostController = async (req, res) => {
     }
 }
 
+const deletePost = async (req, res) => {
+    try {
+        const {postId} = req.body;
+        const curUserId = req._id;
+
+        const post = await Post.findById(postId);
+        const curUser = await User.findById(curUserId);
+        if(!post) {
+            return res.send(error(404, "post not found"));
+        }
+        if(post.owner.toString() !== curUserId) {
+            return res.send(error(403, "only owners can delete their posts"));
+        }
+
+        const index = curUser.posts.indexOf(postId);
+        curUser.posts.splice(index, 1);
+        await curUser.save();
+        await post.remove();
+
+        return res.send(success(200, "post deleted successfully"));
+
+    } catch (e) {
+        return res.send(error(500, e.message));
+    }
+}
+
 module.exports = {
     getAllPostsController,
     createPostController,
     likeAndUnlikePost,
-    updatePostController
+    updatePostController,
+    deletePost
 }
