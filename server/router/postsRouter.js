@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const postsController = require("../controller/postsController");
 const requireUser = require("../middlewares/requireUser");
+const postsController = require("../controller/postsController");
 
 // router.get("/all", requireUser, postsController.getAllPostsController);
 router.post("/", requireUser, postsController.createPostController);

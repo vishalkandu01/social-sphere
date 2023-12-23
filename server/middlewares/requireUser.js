@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const {success, error} = require('../utils/responseWrapper');
+const User = require('../model/User');
 
 dotenv.config();
 

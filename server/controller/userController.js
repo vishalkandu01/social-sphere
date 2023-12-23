@@ -1,5 +1,5 @@
 const Post = require("../model/Post");
-const User = require("../module/User");
+const User = require("../model/User");
 const { success, error } = require("../utils/responseWrapper");;
 
 const followOrUnfollowUserController = async (req, res) => {
@@ -81,7 +81,7 @@ const getUserPosts = async (req, res) => {
     try {
         const userId = req.body.userId;
         if(!userId) {
-            return res.send(400, error(400, "user not exist"));
+            return res.send(400, error(400, "userId is required"));
         }
 
         const allUserPosts = await Post.find({
@@ -95,9 +95,58 @@ const getUserPosts = async (req, res) => {
     }
 }
 
+const deleteMyProfile = async (req, res) => {
+    try {
+        const curUserId = req._id;
+        const curUser = await User.findById(curUserId);
+
+        //delete all posts
+        await Post.deleteMany({
+            owner: curUserId
+        })
+
+        // remove myself from follower's followings
+        curUser.followers.forEach(async (followerId) => {
+            const follower = await User.findById(followerId);
+            const index = await follower.followings.indexOf(curUserId);
+            follower.followings.splice(index, 1);
+            await follower.save();
+        })
+
+        // remove myself from my following's followers
+        curUser.followings.forEach(async (followingId) => {
+            const following = await User.findById(followingId);
+            const index = await following.followers.indexOf(curUserId);
+            following.followers.splice(indexOf, 1);
+            await following.save();
+        })
+
+        // remove myself from all likes
+        const allPosts = await Post.find();
+        allPosts.forEach(async (post) => {
+            const index = post.likes.indexOf(curUserId);
+            post.likes.splice(index, 1);
+            await post.save();
+        })
+        
+        // delete user
+        await curUser.remove(); 
+
+        res.clearCookie('jwt', {
+            httpOnly: true,
+            secure: true,
+        });
+
+        return res.send(success(200, 'user deleted'));
+    } catch (e) {
+        return res.send(500, e.message);
+    }
+}
+
 module.exports = {
     followOrUnfollowUserController,
     getPostOfFollowing,
     getMyPosts,
     getUserPosts,
+    deleteMyProfile,
 }
