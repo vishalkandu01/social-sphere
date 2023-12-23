@@ -1,0 +1,13 @@
+.Navbar {
+    height: 60px;
+    border-bottom: 2px solid var(--border-color);
+
+    .container {
+        height: 100%;
+        max-width: 960px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-inline: auto;
+    }
+}

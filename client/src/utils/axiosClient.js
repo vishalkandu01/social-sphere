@@ -62,14 +62,6 @@ axiosClient.interceptors.response.use(async (respone) => {
             ] = `Bearer ${response.data.result.accessToken}`
 
             return axios(originalRequest)
-
-        // if (response.status === 'ok') {
-        //     setItem(KEY_ACCESS_TOKEN, response.result.accessToken);
-        //     originalRequest.headers[
-        //         'Authorization'
-        //     ] = `Bearer ${response.result.accessToken}`
-
-        //     return axios(originalRequest)
         }
     }
 

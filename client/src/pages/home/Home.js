@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { axiosClient } from '../../utils/axiosClient';
+import Navbar from '../../components/navbar/Navbar'
+import { Outlet } from 'react-router-dom';
 // import axiosClient from '../../utils/axiosClient';
 
 function Home() {
@@ -15,7 +17,10 @@ function Home() {
   }
 
   return (
-    <div>Home</div>
+    <>
+      <Navbar />
+      <Outlet />
+    </>
   )
 }
 
