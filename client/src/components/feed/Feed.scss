@@ -1,13 +1,14 @@
 .Feed {
     // height: calc(100vh - 60px);
-    overflow: hidden;
-
+    margin-top: 60px;
+    
     .container {
         display: flex;
         gap: 20px;
+        
     }
     .left-part {
-        flex:2;
+        flex: 2;
         overflow-y: auto;
     }
     .right-part {
