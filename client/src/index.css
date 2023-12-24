@@ -51,3 +51,14 @@ p {
   /* height: 100%; */
 }
 
+.btn-primary {
+  background-color: var(--accent-color);
+  color: white;
+  font-weight: bold;
+}
+
+.btn-secondary {
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-weight: bold;
+}
