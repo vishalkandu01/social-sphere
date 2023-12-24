@@ -3,7 +3,7 @@ const requireUser = require('../middlewares/requireUser');
 const UserController = require('../controller/userController');
 
 router.post('/follow', requireUser, UserController.followOrUnfollowUserController);
-router.get('/getPostOfFollowing', requireUser, UserController.getPostOfFollowing)
+router.get('/getPostOfFollowing', requireUser, UserController.getPostsOfFollowing);
 router.get('/getMyPosts', requireUser, UserController.getMyPosts);
 router.get('/getUserPosts', requireUser, UserController.getUserPosts);
 router.delete('/', requireUser, UserController.deleteMyProfile);
