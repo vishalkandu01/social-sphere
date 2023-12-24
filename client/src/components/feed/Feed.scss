@@ -1,0 +1,12 @@
+.Feed {
+    // border: 2px solid black;
+    .container {
+        display: flex;
+        .left-part {
+            flex:2;
+        }
+        .right-part {
+            flex: 1;
+        }
+    }
+}

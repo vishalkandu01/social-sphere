@@ -13,7 +13,7 @@ function App() {
         <Route element={<RequireUser />}>
           <Route element={<Home />}>
             <Route path="/" element={<Feed />} />
-            <Route path="/profile:userId" element={<Profile />} />
+            <Route path="/profile/:userId" element={<Profile />} />
           </Route>
         </Route>
         <Route path='/login' element={<Login />} />
